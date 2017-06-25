@@ -52,13 +52,20 @@
       <div class="row">
 
         <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Reports</a></li>
-            <li><a href="#">Analytics</a></li>
-            <li><a href="#">Export</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
+            <ul class="nav nav-sidebar">
+                <li class="<php>if($curr_action == 'Console'){ echo 'active'; }</php>">
+                    <a href="/Console">页面管理</a>
+                </li>
+                <li class="<php>if($curr_action == 'Category'){ echo 'active'; }</php>">
+                    <a href="/Category">分类管理</a>
+                </li>
+                <li class="<php>if($curr_action == 'Content'){ echo 'active'; }</php>">
+                    <a href="/Content">内容管理</a>
+                </li>
+                <li><a href="#">Analytics</a></li>
+                <li><a href="#">Export</a></li>
+            </ul>
+          <!--<ul class="nav nav-sidebar">
             <li><a href="">Nav item</a></li>
             <li><a href="">Nav item again</a></li>
             <li><a href="">One more nav</a></li>
@@ -69,7 +76,7 @@
             <li><a href="">Nav item again</a></li>
             <li><a href="">One more nav</a></li>
             <li><a href="">Another nav item</a></li>
-          </ul>
+          </ul>-->
         </div>
 
 

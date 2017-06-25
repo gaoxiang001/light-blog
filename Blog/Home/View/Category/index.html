@@ -1,0 +1,52 @@
+<extend name="Common/console_layout"/>
+
+<block name="body">
+
+<h2 class="sub-header">分类管理</h2>
+<div class="text-right">
+    <a href="/Category/addCategory" class="btn btn-success">添加</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>分类名称</th>
+                <th>添加时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <volist name="item" id="vo">
+            <tr>
+                <td>{$vo.category_id}</td>
+                <td>{$vo.category_name}</td>
+                <td>{$vo.category_add_time}</td>
+                <td>
+                    <a href="javascript:edit()">修改{$curr_action}</a>
+                    <a href="javascript:;" class="delete-a" category-id="{$vo.category_id}">删除</a>
+                </td>
+            </tr>
+            </volist>
+        </tbody>
+    </table>
+</div>
+</block>
+
+<block name="script">
+<script type="text/javascript">
+$(function(){
+    $(".delete-a").click(function(){
+        if (!confirm("是否删除?")) {
+            return false;
+        }
+        var category_id = $(this).attr('category-id');
+        $.post('/Category', 'category_id='+category_id+'&category_delete=1', function(data){
+            location.reload();
+        });
+    });
+});
+</script>
+</block>

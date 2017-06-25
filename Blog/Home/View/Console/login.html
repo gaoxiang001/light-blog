@@ -7,7 +7,7 @@
 
     <title>Signin</title>
 
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <import type='css' file="css.bootstrap" />
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -61,24 +61,29 @@ body {
 
 <body>
 
-	<div class="container">
+<div class="container">
 
-	<form class="form-signin">
-		<h2 class="form-signin-heading">Please sign in</h2>
-			<label for="inputEmail" class="sr-only">Email address</label>
-				<input type="" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-			<label for="inputPassword" class="sr-only">Password</label>
-				<input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" value="remember-me"> Remember me
-				</label>
-			</div>
-			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-	</form>
+<form class="form-signin" action="/Console/login">
+	<h2 class="form-signin-heading">Please sign in</h2>
+	<label for="inpUser" class="sr-only">User name</label>
+	<input type="text" id="inpUser" name="user_name" class="form-control" placeholder="User name" required autofocus>
+	<label for="inpPass" class="sr-only">Password</label>
+	<input type="password" id="inpPass" name="pass_word" class="form-control" placeholder="Password" required>
+	
+    <button class="btn btn-lg btn-primary btn-block btn-submit" type="submit">Sign in</button>
+</form>
 
-	</div> <!-- /container -->
-
-
+</div>
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<load href="/Public/js/console_common.js" />
+<script type="text/javascript">
+function callSubmit(data) {
+    if (data.code == 1) {
+        window.location = '/Console';
+    } else {
+        alert(data.msg);
+    }
+}
+</script>
 </body>
 </html>

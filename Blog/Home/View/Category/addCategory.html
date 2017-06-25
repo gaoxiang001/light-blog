@@ -1,0 +1,40 @@
+<extend name="Common/console_layout"/>
+
+<block name="style">
+<style type="text/css">
+.add-form-cls{
+    max-width: 500px;
+}
+</style>
+</block>
+
+<block name="body">
+<h2 class="sub-header">添加分类</h2>
+
+<form class="form-horizontal add-form-cls" action="/Category/addCategory">
+    <div class="form-group">
+        <label for="inputEmail3" class="col-sm-2 control-label">分类名称</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control cate-name-ipt" name="category_name" placeholder="分类名称">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-success btn-submit" disabled="disabled">添加分类</button>
+        </div>
+    </div>
+</form>
+</block>
+
+<block name="script">
+<script type="text/javascript">
+function callSubmit(data) {
+    if (data.code == 1) {
+        window.location = '/Category';
+    } else {
+        alert(data.msg);
+    }
+}
+</script>
+</block>

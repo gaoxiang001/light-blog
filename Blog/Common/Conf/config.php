@@ -16,21 +16,10 @@ return array(
     'TMPL_ACTION_ERROR'     =>  'Public/error',//错误页面替换
 	/* 数据库配置 */
     'DB_TYPE'   => 'mysqli',
-    'DB_HOST'   => '123.56.185.207',
-    'DB_NAME'   => 'lvnuo', 
-    'DB_USER'   => 'root', 
-    'DB_PWD'    => '123456',
+    'DB_HOST'   => '101.201.252.66',
+    'DB_NAME'   => 'blog',
+    'DB_USER'   => 'lvnuo',
+    'DB_PWD'    => 'lvnuo2016',
     'DB_PORT'   => '3306',
     'DB_PREFIX' => 't_',
-
-    /*装修数据库*/
-    'decoration'  =>  array(
-        'DB_TYPE'   => 'mysqli',
-        'DB_HOST'   => '123.56.185.207',
-        'DB_NAME'   => 'decoration', 
-        'DB_USER'   => 'root', 
-        'DB_PWD'    => '123456',
-        'DB_PORT'   => '3306',
-        'DB_PREFIX' => 't_',
-    ),
 );
