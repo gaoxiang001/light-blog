@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>登录 - {:C('SLOGAN')}</title>
+    <link rel="Shortcut Icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="Bookmark" href="/favicon.ico" type="image/x-icon">
+
+    <import type='css' file="css.bootstrap" />
+    <import type='css' file="css.common" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<style type="text/css">
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #333333;
+}
+
+.form-signin {
+  margin: 0 auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin .checkbox {
+  font-weight: normal;
+}
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+}
+.form-signin input[type="password"] {
+  margin: 10px 0;
+}
+
+.box{
+    margin: 60px auto 0;
+    padding: 50px 50px 30px;
+    width: 400px;
+    /*height: 550px;*/
+    margin: 0 auto;
+    background: #3F3F3F;
+    border-radius: 4px;
+    box-shadow: 0 0 8px rgba(0,0,0,.1);
+    vertical-align: middle;
+}
+.box .title{
+    margin: 0 auto 50px;
+    padding: 10px;
+    font-weight: 400;
+    color: #969696;
+    text-align: center;
+}
+.box .title .active {
+    font-weight: 700;
+    color: #ea6f5a;
+    border-bottom: 2px solid #ea6f5a;
+}
+.box .title a{
+    padding: 10px;
+    color: #969696;
+    text-decoration: none;
+}
+.box .title a:hover{
+    border-bottom: 2px solid #ea6f5a;
+}
+.form-control{
+    background-color:#4B4B4B;
+    border: #2F2F2F;
+    color: #fff;
+}
+.checkbox label{
+    color: #999999;
+    margin-top: 20px;
+}
+</style>
+
+<body>
+
+<div class="container">
+
+    <div class="box">
+        <h4 class="title">
+            <div class="normal-title">
+                <a class="active" href="javascript:;">登录</a>
+                <b>·</b>
+                <a id="js-sign-up-btn" class="" href="/sign_up">注册</a>
+          </div>
+        </h4>
+
+        <div class="content">
+            <form class="form-signin" action="/Sign/sign_in">
+                <label for="inpUser" class="sr-only">User name</label>
+                <input type="text" id="inpUser" name="user_name" class="form-control" placeholder="User name" required autofocus>
+
+                <label for="inpPass" class="sr-only">Password</label>
+                <input type="password" id="inpPass" name="pass_word" class="form-control" placeholder="Password" required>
+                
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"> 记住我
+                    </label>
+                </div>
+
+                <button class="btn btn-lg btn-primary btn-block btn-submit" type="submit">Sign in</button>
+            </form>
+        </div>
+    </div>
+
+
+</div>
+<load href="/Public/js/jquery-2.0.3.min.js" />
+<load href="/Public/js/common.js" />
+<load href="/Public/js/bootstrap.min.js" />
+<script type="text/javascript">
+function callSubmit(data) {
+    if (data.code == 1) {
+        if (data.data['site_domain'] != '') {
+            window.location = 'http://'+data.data['site_domain']+'.dian8dian.com';
+        } else {
+            window.location = '/u/'+data.data['member_id'];
+        }
+    } else {
+        Global.alert(data.msg, 'danger');
+    }
+}
+</script>
+</body>
+</html>

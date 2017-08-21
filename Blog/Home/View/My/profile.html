@@ -1,0 +1,121 @@
+<extend name="Common/default_layout?bar=footer"/>
+
+<block name="title">个人资料</block>
+
+<block name="style">
+<style type="text/css">
+
+</style>
+</block>
+
+<block name="body">
+<div class="container-fluid">
+    <div class="row pull-left">
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation">
+                <a href="/My/basic">
+                    <span class="glyphicon glyphicon-th-list"></span>
+                    基础设置
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="/My/site">
+                    <span class="glyphicon glyphicon-globe"></span>
+                    站点设置
+                </a>
+            </li>
+            <li role="presentation" class="active">
+                <a href="javascript:;">
+                    <span class="glyphicon glyphicon-user"></span>
+                    个人资料
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="/My/manager">
+                    <span class="glyphicon glyphicon-cog"></span>
+                    帐号管理
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="row pull-center">
+        
+    <form action="/My/profile">
+        <div class="set-div">
+            <div class="left">
+                昵称
+            </div>
+            <div class="right">
+                <input type="text" class="form-control" name="member_nick" value="{:session('member.member_nick')}" placeholder="昵称" required>
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        <div class="set-div">
+            <div class="left">
+                性别
+            </div>
+            <div class="right">
+                <label>
+                    <input type="radio" name="member_sex" value="0" <if condition="session('member.member_sex') eq 0">checked</if>>
+                    保密
+                </label>
+                &nbsp;&nbsp;
+                <label>
+                    <input type="radio" name="member_sex" value="1" <if condition="session('member.member_sex') eq 1">checked</if>>
+                    男
+                </label>
+                &nbsp;&nbsp;
+                <label>
+                    <input type="radio" name="member_sex" value="2" <if condition="session('member.member_sex') eq 2">checked</if>>
+                    女
+                </label>
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        <div class="set-div">
+            <div class="left">
+                绑定邮箱
+            </div>
+            <div class="right">
+                <label>
+                    <input type="email" class="form-control" name="member_email" value="{:session('member.member_email')}" placeholder="绑定后可用于登录">
+                </label>
+                <label>
+                    <!-- <button type="button" class="btn btn-info">发送</button> -->
+                </label>
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        <div class="set-div">
+            <div class="left">
+                <button type="submit" class="btn btn-success">
+                    &nbsp;&nbsp;
+                    保 存&nbsp;&nbsp;
+                </button>
+            </div>
+            <div class="right">
+                
+            </div>
+        </div>
+    </form>
+
+    </div>
+</div>
+</block>
+
+<block name="footer"></block>
+
+<block name="script">
+<script type="text/javascript">
+function callSubmit(data) {
+    if (data.code == '1') {
+        location.reload();
+    } else {
+        Global.alert(data.msg, 'danger');
+    }
+}
+</script>
+</block>

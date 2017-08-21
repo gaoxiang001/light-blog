@@ -1,0 +1,201 @@
+<extend name="Common/default_layout"/>
+
+<block name="title">基础设置</block>
+
+<block name="style">
+<style type="text/css">
+.layui-upload-icon,.layui-upload-iframe{
+    display: none;
+}
+</style>
+</block>
+
+<block name="body">
+<div class="container-fluid">
+    <div class="row pull-left">
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation" class="active">
+                <a href="javascript:;">
+                    <span class="glyphicon glyphicon-th-list"></span>
+                    基础设置
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="/My/site">
+                    <span class="glyphicon glyphicon-globe"></span>
+                    站点设置
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="/My/profile">
+                    <span class="glyphicon glyphicon-user"></span>
+                    个人资料
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="/My/manager">
+                    <span class="glyphicon glyphicon-cog"></span>
+                    帐号管理
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="row pull-center">
+
+    
+        <div class="set-div avatr-div">
+            <div class="left">
+                <img src="{:session('member.member_avatar')==''?C('DEFAULT_AVATAR'):session('member.member_avatar')}" class="img-circle member_avatar">
+            </div>
+            <div class="right">
+                <button type="button" class="btn btn-info upload-btn">更换头像</button>
+                <input type="file" style="display: none;" name="file" id="upload-file"> 
+            </div>
+        </div>
+        <hr class="clearfix">
+    
+    <form action="/My/basic">
+        <input type="hidden" name="member_avatar" id="member_avatar">
+
+        <div class="set-div">
+            <div class="left">
+                站点名称
+            </div>
+            <div class="right">
+                <input type="text" class="form-control" name="site_title" value="{$info.site_title}" placeholder="个人站名称">
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        <div class="set-div">
+            <div class="left">
+                属于自己的域名
+            </div>
+            <div class="right">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon2">http://</span>
+                    <input type="text" class="form-control" name="site_domain" id="site_domain" value="{$info.site_domain}" placeholder="个性域名" aria-describedby="basic-addon2" data-toggle="tooltip" data-placement="top" title="设置个性域名后需要重新登录">
+                    <span class="input-group-addon" id="basic-addon2">.dian8dian.com</span>
+                </div>
+
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        <div class="set-div">
+            <div class="left">
+                简介标题
+            </div>
+            <div class="right">
+                <input type="text" class="form-control w350" name="site_slogan" value="{$info.site_slogan}" placeholder="slogan">
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        <div class="set-div h100">
+            <div class="left">
+                简介
+            </div>
+            <div class="right">
+                <textarea class="form-control w350" name="site_remark" rows="4">{$info.site_remark}</textarea>
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        <div class="set-div">
+            <div class="left">
+                开启评论
+            </div>
+            <div class="right">
+                <label>
+                    <input type="radio" name="site_is_comment" value="1" <if condition="$info.site_is_comment eq '1'">checked</if> >
+                    开启
+                </label>
+                &nbsp;&nbsp;
+                <label>
+                    <input type="radio" name="site_is_comment" value="0" <if condition="$info.site_is_comment eq '0'">checked</if>>
+                    不开启
+                </label>
+
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        <div class="set-div">
+            <div class="left">
+                <button type="submit" class="btn btn-success">
+                    &nbsp;&nbsp;
+                    保 存&nbsp;&nbsp;
+                </button>
+            </div>
+            <div class="right">
+                
+            </div>
+        </div>
+    </form>
+
+    </div>
+</div>
+</block>
+
+<block name="footer">
+    <div class="h100"></div>
+</block>
+
+<block name="script">
+<load href="/Public/js/layui/layui.js" />
+<script type="text/javascript">
+$('[data-toggle="tooltip"]').tooltip();
+
+layui.use('upload', function(){
+    layui.upload({
+        url: '/Common/upload'
+        ,elem: '#upload-file' //指定原始元素，默认直接查找class="layui-upload-file"
+        ,method: 'post' //上传接口的http类型
+        ,success: function(res){
+            if (res.code == '1') {
+                $(".member_avatar").attr('src', res.data.url);
+                $("#member_avatar").val(res.data.avatar);
+            } else {
+                Global.alert(res.msg, 'danger');
+            }
+        }
+    });
+});
+
+$(".upload-btn").click(function(){
+    $("#upload-file").click();
+});
+
+$(".btn-success").click(function(){
+    var site_domain = $("#site_domain").val();
+    if (site_domain != '') {
+        var chk = Global.is_validate(site_domain);
+        if (!chk) {
+            Global.alert('请正确设置个性域名~', 'info');
+            return false;
+        }
+
+        var chk = Global.is_not_zh(site_domain);
+        if (!chk) {
+            Global.alert('请正确设置个性域名~', 'info');
+            return false;
+        }
+    }
+    
+});
+
+function callSubmit(data) {
+    if (data.code == '1') {
+        var site_domain = $("#site_domain").val();
+        if (site_domain == '') {
+            window.location = 'http://blog.dian8dian.com/My/basic';
+        } else {
+            window.location = 'http://'+site_domain+'.dian8dian.com/My/basic';
+        }
+    } else {
+        Global.alert(data.msg, 'danger');
+    }
+}
+</script>
+</block>

@@ -1,0 +1,232 @@
+<extend name="Common/default_layout?bar=footer"/>
+
+<block name="title">站点设置</block>
+
+<block name="style">
+<style type="text/css">
+.set-div .nav-span{
+    position: relative;
+    min-width: 95px;
+    display: block;
+    float: left;
+    text-align: center;
+    background-color: #222;
+    border-color: #080808;
+}
+.set-div .nav-span .close{
+
+}
+.set-div .nav-span a{
+    color: #9D9D9D;
+}
+.set-div .nav-span a:hover{
+    color: white;
+    text-decoration: none;
+}
+.set-div .nav-span a:focus{
+    color: white;
+    text-decoration: none;
+}
+</style>
+</block>
+
+<block name="body">
+<div class="container-fluid">
+    <div class="row pull-left">
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation">
+                <a href="/My/basic">
+                    <span class="glyphicon glyphicon-th-list"></span>
+                    基础设置
+                </a>
+            </li>
+            <li role="presentation"  class="active">
+                <a href="javascript:;">
+                    <span class="glyphicon glyphicon-globe"></span>
+                    站点设置
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="/My/profile">
+                    <span class="glyphicon glyphicon-user"></span>
+                    个人资料
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="/My/manager">
+                    <span class="glyphicon glyphicon-cog"></span>
+                    帐号管理
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="row pull-center">
+        <h3>导航设置</h3>
+
+        <div class="set-div">
+            <volist name="item" id="vo">
+            <span class="nav-span" data-toggle="tooltip" data-placement="top" title="点击编辑导航名称">
+                <if condition="$vo.nav_sort neq 0">
+                    <button type="button" class="close" param-id="{$vo.nav_id}" aria-label="Close" data-toggle="modal" data-target="#confirm">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </if>
+                <a href="javascript:;" class="edit-nav" param-id="{$vo.nav_id}" param-sort="{$vo.nav_sort}">{$vo.nav_title}</a>
+            </span>
+            </volist>
+        </div>
+        <hr class="clearfix">
+        
+        <input type="hidden" id="nav_id">
+        <div class="set-div">
+            <div class="left">
+                顺序位置
+            </div>
+            <div class="right">
+                <label>
+                    <input type="text" id="nav_sort" class="form-control" placeholder="顺序位置">
+                </label>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="set-div">
+            <div class="left">
+                设置导航
+            </div>
+            <div class="right">
+                <label>
+                    <input type="text" id="nav_title" class="form-control" placeholder="新增导航">
+                </label>
+                <label>
+                    <button type="button" id="save-nav-btn" class="btn btn-info">保存</button>
+                </label>
+            </div>
+        </div>
+        <hr class="clearfix">
+
+
+        <!-- <div class="set-div">
+            <div class="left">
+                <button type="button" class="btn btn-success">
+                    &nbsp;&nbsp;
+                    保 存&nbsp;&nbsp;
+                </button>
+            </div>
+            <div class="right">
+                
+            </div>
+        </div> -->
+        
+    </div>
+</div>
+
+<!-- confirm -->
+<div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">提示</h4>
+      </div>
+      <div class="modal-body">
+            是否删除？
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" id="btn-confirm">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+</block>
+
+<block name="footer"></block>
+
+<block name="script">
+<load href="/Public/js/common.js" />
+<script type="text/javascript">
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+
+    $("#btn-confirm").click(function(){
+        $('#confirm').modal('hide');
+        var nav_id = $(this).attr('param-id');
+
+        $.post(
+            '/My/site',
+            {'type':'del', 'nav_id':nav_id},
+            function(data){
+                if (data.code == '1') {
+                    location.reload();
+                } else {
+                    Global.alert(data.msg, 'danger');
+                }
+            }
+        );
+    });
+
+    $(".close").click(function(){
+        $("#btn-confirm").attr('param-id', $(this).attr('param-id'));
+    });
+
+    $(".edit-nav").click(function(){
+        var nav_id    = $(this).attr('param-id');
+        var nav_title = $(this).html();
+        var nav_sort  = $(this).attr('param-sort');
+
+        if (nav_sort == 0) {
+            $("#nav_sort").attr('disabled', 'disabled');
+        } else {
+            $("#nav_sort").removeAttr('disabled');
+        }
+        $("#nav_id").val(nav_id);
+        $("#nav_sort").val(nav_sort);
+        $("#nav_title").val(nav_title);
+    });
+
+    $("#save-nav-btn").click(function(){
+        var nav_id    = $("#nav_id").val();
+        var nav_sort  = $("#nav_sort").val();
+        var nav_title = $("#nav_title").val();
+        var disabled  = $("#nav_sort").attr('disabled');
+
+        if (nav_title == '') {
+            Global.alert('请先写导航标题', 'info');
+            return false;
+        }
+
+        if (disabled != 'disabled') {
+            if (nav_sort != '') {
+                if (!Global.is_number(nav_sort)) {
+                    Global.alert('请填写0以上的数字', 'info');
+                    return false;
+                }
+                if (nav_sort <= 0) {
+                    Global.alert('请填写0以上的数字', 'info');
+                    return false;
+                }
+            } else {
+                nav_sort = 1;
+            }
+        } else {
+            nav_sort = 0;
+        }
+        
+
+        $.post(
+            '/My/site',
+            {'type':'nav', 'nav_id':nav_id, 'nav_sort':nav_sort, 'nav_title':nav_title},
+            function(data){
+                if (data.code == '1') {
+                    location.reload();
+                } else {
+                    Global.alert(data.msg, 'danger');
+                }
+            }
+        );
+    });
+})
+</script>
+</block>

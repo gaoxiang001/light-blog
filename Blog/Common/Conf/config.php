@@ -10,8 +10,9 @@ return array(
     'URL_PATHINFO_DEPR'     =>  '/',    // PATHINFO模式下，各参数之间的分割符号
     'URL_PATHINFO_FETCH'    =>  'ORIG_PATH_INFO,REDIRECT_PATH_INFO,REDIRECT_URL', // 用于兼容判断PATH_INFO 参数的SERVER替代变量列表
     'URL_REQUEST_URI'       =>  'REQUEST_URI', // 获取当前页面地址的系统变量 默认为REQUEST_URI
-    'URL_ROUTER_ON'         =>  true, 
-    'URL_HTML_SUFFIX' =>'',//伪静态后缀
+    'LOAD_EXT_CONFIG'       =>  'router',
+    
+
 
     'TMPL_ACTION_ERROR'     =>  'Public/error',//错误页面替换
 	/* 数据库配置 */
@@ -22,4 +23,27 @@ return array(
     'DB_PWD'    => 'lvnuo2016',
     'DB_PORT'   => '3306',
     'DB_PREFIX' => 't_',
+
+    'DEFAULT_AVATAR' => '/Public/images/avatar.jpg', // 默认头像
+    'IMG'            => 'http://img.dian8dian.com/Uploads/', // 图片地址url
+
+    /* slogan*/
+    'SLOGAN' => '点8点,让懂得有处发泄',
+
+    /* 跟目录地址 */
+    'DOMAIN' => 'http://blog.dian8dian.com',
+
+    /* 禁止申请的二级域名 */
+    'SITE'  => [
+        'www',
+        'file',
+        'img',
+        'blog',
+        'robot',
+        'test',
+        'bate',
+        'gray',
+        'release',
+        'm'
+    ],
 );

@@ -1,0 +1,112 @@
+<extend name="Common/default_layout?bar=footer"/>
+
+<block name="title">帐号管理</block>
+
+<block name="style">
+<style type="text/css">
+
+</style>
+</block>
+
+<block name="body">
+<div class="container-fluid">
+    <div class="row pull-left">
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation">
+                <a href="/My/basic">
+                    <span class="glyphicon glyphicon-th-list"></span>
+                    基础设置
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="/My/site">
+                    <span class="glyphicon glyphicon-globe"></span>
+                    站点设置
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="/My/profile">
+                    <span class="glyphicon glyphicon-user"></span>
+                    个人资料
+                </a>
+            </li>
+            <li role="presentation" class="active">
+                <a href="javascript:;">
+                    <span class="glyphicon glyphicon-cog"></span>
+                    帐号管理
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="row pull-center">
+
+    <form action="/My/manager">
+        <h3>修改密码</h3>
+        
+        <div class="set-div">
+            <div class="left">
+                原密码
+            </div>
+            <div class="right">
+                <label>
+                    <input type="password" class="form-control" name="old_pass" placeholder="原密码" required>
+                </label>
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        <div class="set-div">
+            <div class="left">
+                新密码
+            </div>
+            <div class="right">
+                <label>
+                    <input type="password" class="form-control" name="member_pass" placeholder="新密码" required>
+                </label>
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        <div class="set-div">
+            <div class="left">
+                重复新密码
+            </div>
+            <div class="right">
+                <label>
+                    <input type="password" class="form-control" name="confirm_pass" placeholder="重复新密码" required>
+                </label>
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        <div class="set-div">
+            <div class="left">
+                <button type="submit" class="btn btn-success">
+                    &nbsp;&nbsp;
+                    保 存&nbsp;&nbsp;
+                </button>
+            </div>
+            <div class="right">
+                
+            </div>
+        </div>
+    </form>
+
+
+    </div>
+</div>
+</block>
+
+<block name="footer"></block>
+
+<block name="script">
+<script type="text/javascript">
+function callSubmit(data) {
+    if (data.code == '1') {
+        location.reload();
+    } else {
+        Global.alert(data.msg, 'danger');
+    }
+}
+</script>
+</block>

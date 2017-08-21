@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>写文章 - {:C('SLOGAN')}</title>
+
+    <import type='css' file="css.bootstrap" />
+    <import type='css' file="css.common" />
+    <load href="/Public/js/umeditor/themes/dian8dian/css/umeditor.css" />
+    <load href="/Public/js/layui/css/layui.css" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style type="text/css">
+    .write-header{
+        position: fixed;
+        height: 70px;
+        line-height: 70px;
+    }
+    .write-header div.pull-right{
+        margin-right: 5px;
+    }
+    .write-header #atc-title{
+        height: 50px;
+        margin-left: 20px;
+        width: 500px;
+        font-size: 30px;
+        border: none;
+    }
+    .write-header #atc-title:focus{
+        outline-style: none;
+        border-color: transparent;
+        box-shadow: none;
+    }
+    .write-body{
+        position: relative;
+        margin-top: 70px;
+        min-height: 500px;
+    }
+    </style>
+</head>
+
+<body>
+<div class="write-header navbar-fixed-top">
+    <div class="pull-left">
+        <input type="text" id="atc-title" placeholder="我的文章标题">
+    </div>
+    <div class="pull-right layui-form">
+        <div class="layui-inline">
+            <div class="layui-input-inline">
+                <select name="modules" lay-verify="required" lay-search="">
+                    <option value="">选择分类导航</option>
+                    <volist name="item" id="vo">
+                    <if condition="$vo.nav_sort neq '0'">
+                    <option value="{$vo.nav_id}">{$vo.nav_title}</option>
+                    </if>
+                    </volist>
+                </select>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-success">发布文章</button>
+    </div>
+</div>
+
+<div class="write-body">
+    <script type="text/plain" id="atc-content" style="width:100%;">
+        <p>这里我可以写文章内容</p>
+    </script>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="glyphicon glyphicon-bookmark" style="position: absolute;top: 0;left: 0px;color: #5BC0DE;font-size: 14px;"></span>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title" id="exampleModalLabel">文章设置</h2>
+      </div>
+      <div class="modal-body">
+        <form>
+            <div class="form-group">
+                <label for="recipient-name" class="control-label">文章类型:</label>
+                <select class="form-control" name="atc-type" id="atc-type">
+                    <option value="1">原创</option>
+                    <option value="2">转载</option>
+                    <option value="3">翻译</option>
+                </select>
+            </div>
+
+            <div class="form-group source-div" style="display: none;">
+                <label for="recipient-name" class="control-label">来源:</label>
+                <input type="text" class="form-control" id="atc-source" >
+            </div>
+
+            <div class="form-group">
+                <label for="recipient-name" class="control-label">文章分类:</label>
+                <select class="form-control" id="category_id">
+                    <volist name="category_item" id="vo">
+                    <option value="{$vo.category_id}">{$vo.category_name}</option>
+                    </volist>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="message-text" class="control-label">文章简介:</label>
+                <textarea class="form-control" id="atc-remark" rows="4"></textarea>
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+        <button type="button" class="btn btn-info" data-loading-text="Loading..." autocomplete="off" id="send-btn">下一步</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<load href="/Public/js/jquery-2.0.3.min.js" />
+<load href="/Public/js/bootstrap.min.js" />
+<load href="/Public/js/common.js" />
+<script type="text/javascript"> window.UMEDITOR_HOME_URL = '/Public/js/umeditor/'; </script>
+<load href="/Public/js/umeditor/third-party/template.min.js" />
+<load href="/Public/js/umeditor/umeditor.js" />
+<load href="/Public/js/umeditor/umeditor.config.js" />
+<load href="/Public/js/umeditor/lang/zh-cn/zh-cn.js" />
+
+<load href="/Public/js/layui/layui.js" />
+<script type="text/javascript">
+    layui.use(['form'], function(){ });
+
+    //实例化编辑器
+    var um = UM.getEditor('atc-content');
+    UM.getEditor('atc-content').setHeight($('body').height());
+
+    $(".btn-success").click(function(){
+        var atc_title   = $("#atc-title").val();
+        var layui_this  = $(".layui-this").attr('lay-value');
+        var content     = UM.getEditor('atc-content').getContent();
+        var content_txt = UM.getEditor('atc-content').getContentTxt();
+        if (atc_title == '') {
+            Global.alert('写一下文章标题吧~', 'info');
+            return false;
+        }
+        if (typeof(layui_this) == 'undefined') {
+            Global.alert('选择一下分类导航~', 'info');
+            return false;
+        }
+        if (content_txt == '这里我可以写文章内容') {
+            Global.alert('还没写内容~', 'info');
+            return false;
+        }
+        
+        $('#atc-remark').val(content_txt.substr(0, 200));
+        $('#exampleModal').modal('show');
+    });
+
+    $("#atc-type").change(function(){
+        var act_type = $(this).val();
+        if (act_type == 2) { // 转载
+            $(".source-div").fadeIn();
+        } else {
+            $(".source-div").hide();
+        }
+    });
+
+    $("#send-btn").click(function(){
+        var $btn = $(this).button('loading');
+
+        var params = {
+            'atc_title'   : $('#atc-title').val(),
+            'nav_id'      : $(".layui-this").attr('lay-value'),
+            'content'     : UM.getEditor('atc-content').getContent(),
+            'atc_type'    : $("#atc-type").val(),
+            'atc_source'  : $("#atc-source").val(),
+            'category_id' : $("#category_id").val(),
+            'atc_remark'  : $("#atc-remark").val()
+        };
+
+        console.log(params);
+        var atc_title   = $('#atc-title').val();
+        var nav_id      = $(".layui-this").attr('lay-value');
+        var content     = UM.getEditor('atc-content').getContent();
+        var atc_type    = $("#atc-type").val();
+        var atc_source  = $("#atc-source").val();
+        var category_id = $("#category_id").val();
+        var atc_remark  = $("#atc-remark").val();
+        if (params.atc_type == 2 && params.atc_source == '') {
+            Global.alert('请填写文章来源哦~', 'info');
+            return false;
+        }
+
+        $.post('/Article/write', params, function(data){
+
+            if (data.code == 1) {
+                Global.alert('发布成功！', 'success');
+                setTimeout(function(){
+                    location.reload();
+                }, 2000);
+            } else {
+                Global.alert(data.msg, 'danger');
+            }
+        });
+    });
+</script>
+</body>
+</html>

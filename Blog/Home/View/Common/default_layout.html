@@ -5,10 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Black Blog</title>
+    <title><block name="title"></block> - {:C('SLOGAN')}</title>
+    <link rel="Shortcut Icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="Bookmark" href="/favicon.ico" type="image/x-icon">
 
     <import type='css' file="css.bootstrap" />
-    <import type='css' file="css.common" />
+    <import type='css' file="css.common?v1" />
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -16,11 +18,24 @@
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <style type="text/css">
+        .nav-menu{
+            background: #222222;
+        }
+        .nav-menu > li > a{
+            height: 40px;
+            line-height: 40px;
+            color: #C8C8C8;
+        }
+        .nav-menu > li > a:hover{
+            background-color: #080808;
+            color: #C8C8C8;
+        }
+    </style>
     <block name="style"></block>
 </head>
 
 <body>
-
 <nav class="navbar navbar-fixed-top navbar-inverse">
   	<div class="container">
   		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -31,19 +46,66 @@
           </button>
 
 		<div class="navbar-header">
-		  	<a class="navbar-brand" href="#">天黑 Blog</a>
+		  	<a class="navbar-brand" href="{$site['nav'][0]['href']}">
+            <if condition="$site['basic']['site_title'] neq ''">
+            {$site['basic']['site_title']}
+            <else />
+            {$site['basic']['member_nick']}
+            </if>
+            </a>
 		</div>
 
 	    <div id="navbar" class="navbar-collapse collapse">
 	      	<ul class="nav navbar-nav">
-		        <li class="active"><a href="#">Home</a></li>
-		        <li><a href="#about">About</a></li>
-		        <li><a href="#contact">Contact</a></li>		        
+                <volist name="site.nav" id="vo">
+                <if condition="$_GET['nid'] eq ''">
+                    <li class="<if condition="$vo['nav_sort'] eq '0'">active</if>">
+                <else />
+                    <li class="<if condition="$vo['nav_id'] eq $_GET['nid']">active</if>">
+                </if>
+                        <a href="{$vo.href}">{$vo.nav_title}</a>
+                    </li>
+                </volist>	        
 	      	</ul>
 
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="../navbar/">Default</a></li>
-				<li><a href="../navbar-static-top/">Static top</a></li>
+                <php> if (session('member')) { </php>
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-user"></span>
+                        {:session('member.member_nick')}
+                        </a>
+                        <ul class="dropdown-menu nav-menu">
+                            <li>
+                                <a href="/Article/write" target="_blank">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    &nbsp;&nbsp;写文章
+                                </a>
+                            </li>
+                            <!-- <li>
+                                <a href="#">
+                                    <span class="glyphicon glyphicon-tags"></span>
+                                    &nbsp;&nbsp;我的收藏
+                                </a>
+                            </li> -->
+                            <li>
+                                <a href="/My/basic">
+                                    <span class="glyphicon glyphicon-cog"></span>
+                                    &nbsp;&nbsp;设置
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Sign/sign_out"> 
+                                    <span class="glyphicon glyphicon-log-out"></span>
+                                    &nbsp;&nbsp;退出
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                <php> } else { </php>
+    				<li><a href="/sign_up">注册</a></li>
+    				<li><a href="/sign_in">登录</a></li>
+                <php> } </php>
 			</ul>
 
 	    </div>
@@ -56,13 +118,15 @@
 		
 	</block>
 	
+    <block name="footer">
 	<hr>
 	<footer>
 		<p>&copy; Company 2017</p>
 	</footer>
+    </block>
 </div>
 
-<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<load href="/Public/js/jquery-2.0.3.min.js" />
 <script type="text/javascript" src="/Public/js/bootstrap.min.js"></script>
 <load href="/Public/js/common.js" />
 <block name="script"></block>

@@ -11,6 +11,7 @@ body {
 }
 footer {
   padding: 30px 0;
+  color: #cfcdcd;
 }
 
 /*
@@ -56,4 +57,97 @@ footer {
     top: 0;
     width: 50%; /* 6 columns */
   }
+}
+
+.nav .glyphicon{
+    color: #337AB7;
+}
+.alert{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 400px;
+    z-index: 9999;
+}
+
+.container-fluid .pull-left{
+    width: 280px;
+}
+.nav-pills > li > a .glyphicon{
+    color: #A0A0A0;
+    margin-right: 30px;
+}
+.nav-pills > li > a{
+    color: #333333;
+    font-size: 16px;
+}
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus{
+    background-color: #F0F0F0;
+    color: #333333;
+}
+.nav > li > a:hover, .nav > li > a:focus{
+    background-color: #F0F0F0;
+    color: #333333;
+}
+
+.pull-center{
+    margin-left: 300px;
+    font-size: 16px;
+    color: #9D9D9D;
+}
+.w350{
+    width: 350px;
+}
+.pull-center .img-circle{
+    border: 1px solid #DDDDDD;
+    width: 102px;
+    height: 102px;
+}
+.set-div{
+    height: 40px;
+    line-height: 40px;
+}
+.h100{
+    height: 100px;
+}
+.avatr-div{
+    height: 105px;
+}
+.set-div div,.avatr-div div{
+    float: left;
+    /*text-align: center;*/
+}
+.avatr-div div{
+    height: 105px;
+    line-height: 105px;
+}
+.set-div div.left{
+    width: 150px;
+}
+.set-div .right .input-group{
+    width: 350px;
+}
+.col-comment{
+    width: 75%;
+    margin: 0 auto;
+}
+.col-comment p.comment-tit{
+        text-align: left;
+    margin: 30px 0 10px 0;
+}
+.col-comment p{
+    text-align: right;
+    margin-top: 10px;
+}
+.col-comment p a.first{
+    margin-right: 10px;
+    text-decoration: none;
+    color: #999696;
+}
+.col-comment .comment-avatar{
+    width: 40px;
+    height: 40px;
 }

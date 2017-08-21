@@ -17,14 +17,12 @@ class CategoryModel extends Model
         $this->m = M('category');
     }
 
-    public function getCategoryByMemberId()
+    public function getCategoryByMemberId($member_id = '')
     {
-        $member_id = session('member.member_id');
-
         $item = $this->m
-            ->where(['fk_member_id' => $member_id, 'category_delete' => 0])
+            ->where("(fk_member_id={$member_id} OR fk_member_id=0) AND category_delete=0")
             ->field('category_id, category_name, category_add_time')
-            ->order('category_add_time desc')
+            ->order('category_add_time asc')
             ->select();
 
         return $item;
